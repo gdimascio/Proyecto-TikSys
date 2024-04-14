@@ -16,4 +16,54 @@ color: #666666;
 body{
     font-family: 'Source Code Pro';
     background-color: #666666;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-div{
+    display: flex;
+    justify-content: center;
+    background-color: #878787;
+    max-width: 400px;
+    border-radius: 5px;
+    padding: 25px 0;
+}
+.user-form{
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    width: 400px;
+    padding: 0 50px;
+
+}
+.user-form > *{
+    min-width: 300px;
+    min-height: 30px;
+    margin: 15px 0;
+    padding: 5px;
+    border-radius: 2px;
+    border: none;
+}
+.user-form > textarea{
+    resize: vertical;
+    min-height: 80px;
+}
+.adjuntar{
+    min-width: 100px;
+}
+
+.user-form > div{
+    display: flex;
+    justify-content: center;
+
+}
+.enviar-button{
+    min-width: 150px;
+    min-height: 30px;
+    margin: 15px 0;
+    padding: 5px;
+    border-radius: 2px;
+    border: none;
+    background-color: #908FB9;
 }
