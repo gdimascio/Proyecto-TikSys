@@ -1,0 +1,19 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    text-decoration: none;
+    list-style: none;
+}
+* a{
+    scroll-behavior: smooth;
+    text-decoration: none;
+}
+.colores{
+color: #666666;
+}
+body{
+    font-family: 'Source Code Pro';
+    background-color: #666666;
+}
