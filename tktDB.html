@@ -23,23 +23,26 @@
 </head>
 <body>
     <h1>Welcome to SysTick</h1>
-    <div class="user-div">
-        <form class="user-form" action="">
-            <input type="text" name="asunto" id="asunto" required placeholder="Asunto">
-            <input type="text" name="nombre" id="nombre" required placeholder="Nombre y Apellido">
-            <input type="tel" name="telefono" id="telefono" required placeholder="Telefono">
-            <input type="email" name="email" id="email" required placeholder="Mail">
-            <textarea name="descripcion" id="descripcion" required placeholder="Descripcion"></textarea>
-            <button class="adjuntar" type="submit">Adjuntar</button>
+    <div class="db-div">
+        <table class="table-div">
+            <thead class="table-head">
+                <th>Ticket</th>
+                <th>Asunto</th>
+                <th>Nombre</th>
+            </thead>
 
-            <div>
-                <button class="enviar-button button" type="submit">ENVIAR</button>
-            </div>
-        </form>
+            <tbody class="table-body">
+                <!-- {{#each}} -->
+                <tr>
+                    <td>Numero de Ticket</td>
+                    <td>Asunto del Ticket</td>
+                    <td>Nombre del Usuario</td>
+                    <td style="color: red;">ESTADO</td>
+                </tr>
+                <!-- {{/each}} -->
+            </tbody>
+        </table>
     </div>
-
-
-
     
 </body>
 </html>

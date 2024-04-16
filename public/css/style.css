@@ -12,6 +12,8 @@
 }
 .colores{
 color: #666666;
+color: #908FB9;
+color: #878787;
 }
 body{
     font-family: 'Source Code Pro';
@@ -35,7 +37,6 @@ body{
     align-items: center;
     width: 400px;
     padding: 0 50px;
-
 }
 .user-form > *{
     min-width: 300px;
@@ -66,4 +67,47 @@ body{
     border-radius: 2px;
     border: none;
     background-color: #908FB9;
+}
+
+.table-div{
+    /* display: flex; */
+    /* justify-content: center; */
+    background-color: #878787;
+    /* max-width: 400px; */
+    border-radius: 5px;
+    padding: 25px;
+}
+
+
+
+.tkt-div{
+    background-color: #878787;
+    border-radius: 5px;
+    padding: 25px;
+    display: grid;
+    grid-column-gap: 30px;
+    grid-row-gap: 10px;
+}
+.tkt-head{
+    grid-column: 1;
+    font-weight: 700;
+}
+.tkt-data{
+    grid-column: 2;
+}
+.tkt-data-txt{
+    border-radius: 5px;
+    resize: vertical;
+    border-color: none;
+    padding: 5px;
+}
+.btn-div{
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
+}
+.btn-div > *{
+    margin: 5px;
+    padding: 5px;
+    
 }
