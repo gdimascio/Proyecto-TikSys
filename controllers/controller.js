@@ -1,79 +1,36 @@
-require("dotenv").config;
 
-const nodemailer = require("nodemailer");
+// CONEXION A FIREBASE
+const async = require("hbs/lib/async");
+const db = require("../firebase/firebase");
+const { FieldValue } = require("firebase-admin/firestore");
+const { default: firebase } = require("firebase/compat/app");
+const { doc } = require("firebase/firestore");
 
+// CARGA DE COLECCIONES
+const ticketsCollection = db.collection("tickets");
+const cantidadTktsCollection = db.collection("cantidad tkts").doc("cant_ID");
 
+// VENTANA PRINCIPAL DEL FORMULARIO
 exports.formulario = async(req,res) => {
-    res.render("index")
+    res.render("home")
 }
 
-exports.sendMail = async(req,res) => {
-    // TODO: codigo para agregar los datos a la DB y generar un nuevo TICKET
+// CARGA TKT A FIREBASE
+exports.submitTkt = async(req,res) => {
+    // SUMA AL CONTADOR DE TKTS
+    const increment = FieldValue.increment(1);
+    await cantidadTktsCollection.update({ cant_tkts: increment });
 
+    // OBTIENE EL VALOR DEL CONTADOR
+    const counterDoc = await cantidadTktsCollection.get();
+    const { cant_tkts } = counterDoc.data();
+
+    // CARGA LOS DATOS DEL NUEVO TKT
     const {asunto, nombre, telefono, email, descripcion} = req.body;
+    const newTkt = {asunto, nombre, telefono, email, descripcion, estado:["abierto"], ticket:`${cant_tkts}`};
+    // USA EL VALOR DEL CONTADOR COMO ID DEL NUEVO TICKET
+    await ticketsCollection.doc(`ticket_${cant_tkts}`).set(newTkt);  
 
-    // Validar campos
-    if(!asunto || !nombre || !telefono || !email || !descripcion){
-        return res.render("index", {error: "Todos los campos son obligatorios"});
-    }
-    
-    // Configurar transportador SMTP
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        auth: {
-            // user: process.env.USERNAME,
-            // pass: process.env.PASSWORD
-
-            user: process.env.USERNAME_LOCAL,
-            pass: process.env.PASSWORD_LOCAL
-        },
-        tls: {rejectUnauthorized: false}
-    });
-
-    await new Promise((resolve, reject) => {
-        // verify connection configuration
-        transporter.verify(function (error, success) {
-            if (error) {
-                console.log(error);
-                reject(error);
-            } else {
-                console.log("Server is ready to take our messages");
-                resolve(success);
-            }
-        });
-    });
-
-    // Configurar correo electronico
-    const mailOptions = {
-        from: 'no-reply@systick.com',  // gmail no acepta otro SENDER..
-        to: email,
-        bcc: 'guido.dimascio@gmail.com',
-        subject: 'Nuevo Ticket Cargado N°' + asunto,
-        text: `
-        Asunto: ${asunto}
-        Usuario: ${nombre}
-        Telefono: ${telefono}
-        Email: ${email}
-        Descripcion: 
-        ${descripcion}
-        `
-        // TODO: agregar un link que direccione al TKT
-    };
-
-    await new Promise((resolve, reject) => {
-        // Enviar correo
-        transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-                console.error(err);
-                reject(err);
-            } else {
-                res.send(`<script>alert("Email Sent Successfully.")</script>`);
-                res.redirect("/");
-                // console.log(info);
-                resolve(info);
-            }
-        });
-    });
-
+    res.redirect("/enviar", {cant_tkts});
+    // res.redirect(/controllers/controllerMail/enviar?tkt:cant_tkts);
 }
