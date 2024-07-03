@@ -1,19 +1,21 @@
 require("dotenv").config;
+const { onSnapshotsInSync } = require("firebase/firestore");
 const db = require("../firebase/firebase");
 const nodemailer = require("nodemailer");
 
 
 
-exports.sendMail = async(req,res) => {
-
-    const ticketsCollection = db.collection("tickets").doc(cant_tkts);
-
+exports.sendMail = async (req,res) => {
+    // RECUPERA EL NUMERO DE TKT DEL QUERY
     const tkt = req.query.cant_tkts;
-    console.log(tkt);
+    // LLAMA AL TKT CORRESPONDIENTE USANDO cant_tkt
+    const ticketsCollection = db.collection("tickets").doc(`ticket_${tkt}`);
+    const doc = await ticketsCollection.get();
+    // ASIGNA LOS DATOS DEL TICKET cant_tkt
+    const {asunto, nombre, telefono, email, descripcion, estado, ticket} = doc.data();
 
-    /*
-
-    // Configurar transportador SMTP
+    
+    // Configura transportador SMTP
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
@@ -42,10 +44,10 @@ exports.sendMail = async(req,res) => {
 
     // Configurar correo electronico
     const mailOptions = {
-        from: 'no-reply@systick.com',  // gmail no acepta otro SENDER..
+        from: 'no-reply@systick.com',  // gmail no acepta otro SENDER...
         to: email,
         bcc: 'guido.dimascio@gmail.com',
-        subject: 'Nuevo Ticket Cargado N°' + asunto,
+        subject: 'Nuevo Ticket Cargado N°' + ticket,
         text: `
         Asunto: ${asunto}
         Usuario: ${nombre}
@@ -55,6 +57,7 @@ exports.sendMail = async(req,res) => {
         ${descripcion}
         `
         // TODO: agregar un link que direccione al TKT
+        // TODO: agregar estilos al envio de mail
     };
 
     await new Promise((resolve, reject) => {
@@ -64,16 +67,18 @@ exports.sendMail = async(req,res) => {
                 console.error(err);
                 reject(err);
             } else {
-                res.send(`<script>alert("Email Sent Successfully.")</script>`);
+                // Envia una respuesta por medio de ALERT, luego redirecciona
+                res.send(`
+                    <script>
+                        alert("Email Sent Successfully.")
+                        window.location.href = "/";
+                    </script>
+                    `);
                 res.redirect("/");
                 // console.log(info);
                 resolve(info);
             }
         });
     });
-
-
-    */
-    res.redirect("/");
 
 }

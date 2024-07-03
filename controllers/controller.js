@@ -31,6 +31,6 @@ exports.submitTkt = async(req,res) => {
     // USA EL VALOR DEL CONTADOR COMO ID DEL NUEVO TICKET
     await ticketsCollection.doc(`ticket_${cant_tkts}`).set(newTkt);  
 
-    res.redirect("/enviar", {cant_tkts});
-    // res.redirect(/controllers/controllerMail/enviar?tkt:cant_tkts);
+    // res.redirect("/enviar", {cant_tkts});
+    res.redirect(`/enviar?cant_tkts=${cant_tkts}`);
 }

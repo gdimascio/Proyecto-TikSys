@@ -6,3 +6,7 @@ Mail
 Descripcion
 Adjunto
 Estado [ abierto, cerrado, cancelado ]
+
+
+TODO: pantalla de todos los tickets para ADMIN
+TODO: redireccionar a ticket recien abierto luego de envio de mail

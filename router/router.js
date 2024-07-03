@@ -8,7 +8,7 @@ router.get("/", controller.formulario); // ventana ppl del formulario
 
 router.post("/cargar", controller.submitTkt); // carga de nuevo tkt a la base de datos
 
-router.post("/enviar", controllerMail.sendMail); // envio de datos del nuevo tkt a mails
+router.get("/enviar", controllerMail.sendMail); // envio de datos del nuevo tkt a mails
 
 
 
