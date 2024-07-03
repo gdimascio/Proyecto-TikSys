@@ -44,3 +44,14 @@ exports.admin = async(req,res) => {
 }
 
 // VENTANA DE TICKET ESPECIFICO PARA ADMIN
+exports.showTkt = async(req,res) => {
+    const tktDoc = await ticketsCollection.doc(req.params.id).get();
+    if (!tktDoc.exists) {
+        return res.status(404).send("Ticket not found");
+    }
+    const ticket = {
+        id: tktDoc.id,
+        ...tktDoc.data()
+    }
+    res.render("ticket", {ticket})
+}
