@@ -111,3 +111,21 @@ body{
     padding: 5px;
     
 }
+
+
+
+/*_______________________________________________________________*/
+.admin-div{
+    max-width: 90vw;
+    display: flex;
+    flex-direction: column;
+}
+.table-body tr{
+    text-align: center;
+    line-height: 30px;
+    border: 1px solid #ffffff;
+}
+.table-body tr td{
+    overflow: hidden;
+    min-width: 200px;
+}

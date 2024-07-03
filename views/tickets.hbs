@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{> head}}
+
+<body>
+    <h1>Welcome to SysTick</h1>
+    <div class="admin-div">
+        <table class="admin-table">
+            <thead class="table-head">
+                <th>Ticket N°</th>
+                <th>Asunto</th>
+                <th>Nombre</th>
+                {{!-- <th>Telefono</th> --}}
+                {{!-- <th>Mail</th> --}}
+                <th>Estado</th>
+            </thead>
+
+            <tbody class="table-body">
+                {{#each tickets}}
+                <tr>
+                    <td>{{ticket}}</td>
+                    <td>{{asunto}}</td>
+                    <td>{{nombre}}</td>
+                    {{!-- <td>{{telefono}}</td> --}}
+                    {{!-- <td>{{email}}</td> --}}
+                    <td style="text-transform:uppercase;"><a href="#">{{estado}}</a></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -10,6 +10,7 @@ router.post("/cargar", controller.submitTkt); // carga de nuevo tkt a la base de
 
 router.get("/enviar", controllerMail.sendMail); // envio de datos del nuevo tkt a mails
 
-
+router.get("/admin", controller.admin); // ventana de tickets para ADMIN
+router.get("/admin", controller.admin); 
 
 module.exports = router;

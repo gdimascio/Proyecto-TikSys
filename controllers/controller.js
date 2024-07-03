@@ -34,3 +34,17 @@ exports.submitTkt = async(req,res) => {
     // res.redirect("/enviar", {cant_tkts});
     res.redirect(`/enviar?cant_tkts=${cant_tkts}`);
 }
+
+// VENTANA PRINCIPAL DE TICKETS PARA ADMIN
+exports.admin = async(req,res) => {
+    const ticketSnapshot = await ticketsCollection.get();
+    const tickets = ticketSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }))
+    res.render("tickets", {tickets})
+}
+
+// VENTANA DE TICKET ESPECIFICO PARA ADMIN
+
+
