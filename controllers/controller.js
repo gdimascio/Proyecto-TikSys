@@ -28,16 +28,14 @@ exports.submitTkt = async(req,res) => {
     // CARGA LOS DATOS DEL NUEVO TKT
     const {asunto, nombre, telefono, email, descripcion} = req.body;
     const newTkt = {asunto, nombre, telefono, email, descripcion, estado:["abierto"], ticket:`${cant_tkts}`};
-    // USA EL VALOR DEL CONTADOR COMO ID DEL NUEVO TICKET
-    await ticketsCollection.doc(`ticket_${cant_tkts}`).set(newTkt);  
-
-    // res.redirect("/enviar", {cant_tkts});
-    res.redirect(`/enviar?cant_tkts=${cant_tkts}`);
+    // AGREGA LOS DATOS DEL NUEVO TICKET Y REDIRECCIONA A MAIL MANDANDO EL ID
+    const ticketSnapshot = await ticketsCollection.add(newTkt);
+    res.redirect(`/enviar?tktDoc=${ticketSnapshot.id}`);
 }
 
 // VENTANA PRINCIPAL DE TICKETS PARA ADMIN
 exports.admin = async(req,res) => {
-    const ticketSnapshot = await ticketsCollection.get();
+    const ticketSnapshot = await ticketsCollection.orderBy("ticket", "asc").get();
     const tickets = ticketSnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -46,5 +44,3 @@ exports.admin = async(req,res) => {
 }
 
 // VENTANA DE TICKET ESPECIFICO PARA ADMIN
-
-

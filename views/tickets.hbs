@@ -19,12 +19,12 @@
             <tbody class="table-body">
                 {{#each tickets}}
                 <tr>
-                    <td>{{ticket}}</td>
-                    <td>{{asunto}}</td>
-                    <td>{{nombre}}</td>
-                    {{!-- <td>{{telefono}}</td> --}}
-                    {{!-- <td>{{email}}</td> --}}
-                    <td style="text-transform:uppercase;"><a href="#">{{estado}}</a></td>
+                    <td>{{this.ticket}}</td>
+                    <td>{{this.asunto}}</td>
+                    <td>{{this.nombre}}</td>
+                    {{!-- <td>{{this.telefono}}</td> --}}
+                    {{!-- <td>{{this.email}}</td> --}}
+                    <td style="text-transform:uppercase;"><a href="/ticket/{{this.id}}">{{this.estado}}</a></td>
                 </tr>
                 {{/each}}
             </tbody>

@@ -7,14 +7,14 @@ const nodemailer = require("nodemailer");
 
 exports.sendMail = async (req,res) => {
     // RECUPERA EL NUMERO DE TKT DEL QUERY
-    const tkt = req.query.cant_tkts;
+    const tktDoc = req.query.tktDoc;
     // LLAMA AL TKT CORRESPONDIENTE USANDO cant_tkt
-    const ticketsCollection = db.collection("tickets").doc(`ticket_${tkt}`);
+    const ticketsCollection = db.collection("tickets").doc(tktDoc);
     const doc = await ticketsCollection.get();
     // ASIGNA LOS DATOS DEL TICKET cant_tkt
     const {asunto, nombre, telefono, email, descripcion, estado, ticket} = doc.data();
 
-    
+
     // Configura transportador SMTP
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
