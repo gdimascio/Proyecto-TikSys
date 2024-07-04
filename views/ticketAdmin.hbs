@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{{> head}}
+<head>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="icon" href="/img/favicon.png">
+</head>
+
+<body>
+    <h1>Welcome to SysTick</h1>
+    <div class="admin-div">
+        <table class="admin-table">
+            <thead class="table-head">
+                <th>Ticket N°</th>
+                <th>Asunto</th>
+                <th>Nombre</th>
+                <th>Telefono</th>
+                <th>Mail</th>
+                <th>Descripcion</th>
+                <th>Estado</th>
+            </thead>
+
+            <tbody class="table-body">
+                <tr>
+                    <td>{{ticket.ticket}}</td>
+                    <td>{{ticket.asunto}}</td>
+                    <td>{{ticket.nombre}}</td>
+                    <td>{{ticket.telefono}}</td>
+                    <td>{{ticket.email}}</td>
+                    <td>{{ticket.descripcion}}</td>
+                    <td id="estado" style="text-transform:uppercase;">{{ticket.estado}}</td>
+                    <script>
+                        var estado = document.getElementById("estado");
+                        if(estado.textContent === "abierto") estado.style.color = "#ff000080"//red
+                        if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"//green
+                        if(estado.textContent === "cancelado") estado.style.color = "#ffff0080"//yellow
+                    </script>
+                </tr>
+            </tbody>
+        </table>
+        <div class="botones">
+            <button class="bttn-res">RESOLVER</button>
+            <button class="bttn-cls">CANCELAR</button>
+        </div>
+    </div>
+    <div class="back">
+        <a href="/admin"><i class="fa-solid fa-left-long"></i><strong>VOLVER</strong></a>
+    </div>
+</body>
+</html>

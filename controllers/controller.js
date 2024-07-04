@@ -33,17 +33,7 @@ exports.submitTkt = async(req,res) => {
     res.redirect(`/enviar?tktDoc=${ticketSnapshot.id}`);
 }
 
-// VENTANA PRINCIPAL DE TICKETS PARA ADMIN
-exports.admin = async(req,res) => {
-    const ticketSnapshot = await ticketsCollection.orderBy("ticket", "desc").get();
-    const tickets = ticketSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-    }))
-    res.render("tickets", {tickets})
-}
-
-// VENTANA DE TICKET ESPECIFICO PARA ADMIN
+// VENTANA DE TICKET ESPECIFICO
 exports.showTkt = async(req,res) => {
     const tktDoc = await ticketsCollection.doc(req.params.id).get();
     if (!tktDoc.exists) {

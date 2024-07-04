@@ -2,7 +2,9 @@
 require("dotenv").config();
 
 const express = require("express");
+
 const router = require("./router/router")
+const routerAdmin = require("./router/routerAdmin")
 const hbs = require("hbs");
 
 const app = express();
@@ -20,6 +22,8 @@ app.use(express.urlencoded({extended: false}));
 
 
 app.use("/", router);
+app.use("/admin", routerAdmin);
+
 
 
 const port = process.env.PORT || 3001;
