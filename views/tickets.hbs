@@ -24,7 +24,15 @@
                     <td>{{this.nombre}}</td>
                     {{!-- <td>{{this.telefono}}</td> --}}
                     {{!-- <td>{{this.email}}</td> --}}
-                    <td style="text-transform:uppercase;"><a href="/tkt/{{this.id}}">{{this.estado}}</a></td>
+                    <td class="estado"><a id="estado" href="/tkt/{{this.id}}">{{this.estado}}</a></td>
+                    <script>
+                        var estado = document.querySelectorAll("a#estado");
+                        estado.forEach(function(item,){
+                            if(item.textContent === "abierto") item.style.color = "#ff000080"//red
+                            if(item.textContent === "cerrado") item.style.color = "#002e00b3"//green
+                            if(item.textContent === "cancelado") item.style.color = "#ffff0080"//yellow
+                        })
+                    </script>
                 </tr>
                 {{/each}}
             </tbody>

@@ -14,7 +14,6 @@ exports.sendMail = async (req,res) => {
     // ASIGNA LOS DATOS DEL TICKET cant_tkt
     const {asunto, nombre, telefono, email, descripcion, estado, ticket} = doc.data();
 
-
     // Configura transportador SMTP
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -48,15 +47,29 @@ exports.sendMail = async (req,res) => {
         to: email,
         bcc: 'guido.dimascio@gmail.com',
         subject: 'Nuevo Ticket Cargado N°' + ticket,
-        text: `
-        Asunto: ${asunto}
-        Usuario: ${nombre}
-        Telefono: ${telefono}
-        Email: ${email}
-        Descripcion: 
+
+        html: `<p>
+        Asunto: ${asunto}<br/>
+        Usuario: ${nombre}<br/>
+        Telefono: ${telefono}<br/>
+        Email: ${email}<br/>
+        Descripcion: <br/>
         ${descripcion}
-        `
-        // TODO: agregar un link que direccione al TKT
+        <a href="http://localhost:3001/tkt/${tktDoc}">Ir al ticket</a><br/>
+        </p>`,
+
+
+
+        // text: `
+        // Asunto: ${asunto}
+        // Usuario: ${nombre}
+        // Telefono: ${telefono}
+        // Email: ${email}
+        // Descripcion: 
+        // ${descripcion}
+        // `
+
+
         // TODO: agregar estilos al envio de mail
     };
 
