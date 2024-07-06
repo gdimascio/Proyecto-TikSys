@@ -1,6 +1,7 @@
 
 const async = require("hbs/lib/async");
 const db = require ("../firebase/firebase");
+const { merge } = require("../router/routerAdmin");
 
 const ticketsCollection = db.collection("tickets");
 
@@ -25,4 +26,31 @@ exports.showTkt = async(req,res) => {
         ...tktDoc.data()
     }
     res.render("ticketAdmin", {ticket})
+}
+
+// CAMBIO DE ESTADO DE TICKETS PARA ADMIN
+exports.resolveTkt = async(req,res) => {
+    // RECUPERA EL NUMERO DE TKT DEL QUERY
+    const tktDoc = req.body.id;           // DOC del ticket a modificar
+    const tktObs = req.body.observaciones;  // OBSERVACION a agregar
+    const tktEstado = req.body.estado;      // ESTADO a cambiar
+
+    // referencia a ticketsCollection
+    const ticketRef = ticketsCollection.doc(tktDoc); 
+        const ticketSnapshot = await ticketRef.get();
+
+    // actualiza el Estado y Observaciones en el ticket
+    if(ticketSnapshot.exists){
+        await ticketRef.set({estado: tktEstado, observaciones: tktObs}, {merge: true})
+    } else {
+        console.log("El ticket no existe");
+    }
+
+    // redirecciona a lista de tickets
+    const ticketsSnapshot = await ticketsCollection.orderBy("ticket", "desc").get();
+    const tickets = ticketsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+    }))
+    res.redirect("/admin")
 }

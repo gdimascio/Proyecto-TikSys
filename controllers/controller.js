@@ -30,6 +30,7 @@ exports.submitTkt = async(req,res) => {
     const newTkt = {asunto, nombre, telefono, email, descripcion, estado:["abierto"], ticket:cant_tkts};
     // AGREGA LOS DATOS DEL NUEVO TICKET Y REDIRECCIONA A MAIL MANDANDO EL ID
     const ticketSnapshot = await ticketsCollection.add(newTkt);
+    // REDIRECCIONA A routerMail
     res.redirect(`/enviar?tktDoc=${ticketSnapshot.id}`);
 }
 

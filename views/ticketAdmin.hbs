@@ -41,9 +41,51 @@
             </tbody>
         </table>
         <div class="botones">
-            <button class="bttn-res">RESOLVER</button>
-            <button class="bttn-cls">CANCELAR</button>
+            <button data-id="{{ticket.id}}" id="btn_res" class="btn-res">RESOLVER</button>
+            <button data-id="{{ticket.id}}" id="btn_cls" class="btn-cls">CANCELAR</button>
         </div>
+
+        <script>
+            function displayForm(form){
+                var confirmForm = document.querySelector(form);
+                if (confirmForm.style.display === "flex") {
+                    confirmForm.style.display = "none";
+                } else {
+                    confirmForm.style.display = "flex";
+                }
+            }
+
+            const resolveButton = document.getElementById("btn_res");
+            resolveButton.addEventListener('click', function() {
+                displayForm("#resolve_form");
+            })
+
+            const cancelButton = document.getElementById("btn_cls");
+            cancelButton.addEventListener('click', function() {
+                displayForm("#cancel_form");
+            })
+        </script>
+
+        <form action="/admin/estado" method="post" id="resolve_form">
+            Resolver Ticket?
+            <textarea name="observaciones" id="obs" placeholder="Observaciones"></textarea>
+            <input type="text" name="id" style="display: none;" value="{{ticket.id}}">
+            <input type="text" name="estado" style="display: none;" value="cerrado">
+
+            <button type="button" onclick="displayForm('#resolve_form')">CANCELAR</button>
+            <button type="submit">ENVIAR</button>
+        </form>
+
+        <form action="/admin/estado" method="post" id="cancel_form">
+            Cerrar Ticket?
+            <textarea name="observaciones" id="obs" placeholder="Observaciones"></textarea>
+            <input type="text" name="id" style="display: none;" value="{{ticket.id}}">
+            <input type="text" name="estado" style="display: none;" value="cancelado">
+
+            <button type="button" onclick="displayForm('#cancel_form')">CANCELAR</button>
+            <button type="submit">ENVIAR</button>
+        </form>
+
     </div>
     <div class="back">
         <a href="/admin"><i class="fa-solid fa-left-long"></i><strong>VOLVER</strong></a>

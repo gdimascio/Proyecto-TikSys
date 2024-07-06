@@ -7,5 +7,6 @@ const controller = require("../controllers/controllerAdmin");
 router.get("/", controller.admin);          // ventana de tickets para ADMIN
 router.get("/tkt/:id", controller.showTkt); // ventana de tickets especifico para ADMIN
 
+router.post("/estado", controller.resolveTkt);
 
 module.exports = router;
