@@ -1,3 +1,4 @@
 node_modules
 systick-firebase-token.json
 .env
+.vercel
