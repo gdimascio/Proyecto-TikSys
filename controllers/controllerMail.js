@@ -4,7 +4,6 @@ const db = require("../firebase/firebase");
 const nodemailer = require("nodemailer");
 
 
-
 exports.sendMail = async (req,res) => {
     // RECUPERA EL NUMERO DE TKT DEL QUERY
     const tktDoc = req.query.tktDoc;
@@ -12,18 +11,19 @@ exports.sendMail = async (req,res) => {
     const ticketsCollection = db.collection("tickets").doc(tktDoc);
     const doc = await ticketsCollection.get();
     // ASIGNA LOS DATOS DEL TICKET cant_tkt
-    const {asunto, nombre, telefono, email, descripcion, estado, ticket} = doc.data();
+    const {asunto, nombre, telefono, email, descripcion, estado, ticket, observaciones} = doc.data();
 
     // Configura transportador SMTP
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
+        
         auth: {
-            // user: process.env.USERNAME,
-            // pass: process.env.PASSWORD
+            user: process.env.USERNAME,
+            pass: process.env.PASSWORD
 
-            user: process.env.USERNAME_LOCAL,
-            pass: process.env.PASSWORD_LOCAL
+            // user: process.env.USERNAME_LOCAL,
+            // pass: process.env.PASSWORD_LOCAL
         },
         tls: {rejectUnauthorized: false}
     });
