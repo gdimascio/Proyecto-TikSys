@@ -9,43 +9,59 @@
 </head>
 
 <body>
-    <h1>Welcome to SysTick</h1>
+    <h1>Welcome to TikSys</h1>
     <div class="admin-div">
         <table class="admin-table">
-            <thead class="table-head">
+            <tr>
                 <th>Ticket N°</th>
+                <td>{{ticket.ticket}}</td>
+            </tr>
+            <tr>
                 <th>Asunto</th>
+                <td>{{ticket.asunto}}</td>
+            </tr>
+            <tr>
                 <th>Nombre</th>
+                <td>{{ticket.nombre}}</td>
+            </tr>
+            <tr>
                 <th>Telefono</th>
+                <td>{{ticket.telefono}}</td>
+            </tr>
+            <tr>
                 <th>Mail</th>
+                <td>{{ticket.email}}</td>
+            </tr>
+            <tr>
                 <th>Descripcion</th>
+                <td>{{ticket.descripcion}}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ticket.observaciones}}</td>
+            </tr>
+            <tr>
                 <th>Estado</th>
-            </thead>
+                <td id="estado" style="text-transform:uppercase;">{{ticket.estado}}</td>
+            </tr>
 
-            <tbody class="table-body">
-                <tr>
-                    <td>{{ticket.ticket}}</td>
-                    <td>{{ticket.asunto}}</td>
-                    <td>{{ticket.nombre}}</td>
-                    <td>{{ticket.telefono}}</td>
-                    <td>{{ticket.email}}</td>
-                    <td>{{ticket.descripcion}}</td>
-                    <td id="estado" style="text-transform:uppercase;">{{ticket.estado}}</td>
-                    <script>
-                        var estado = document.getElementById("estado");
-                        if(estado.textContent === "abierto") estado.style.color = "#ff000080"//red
-                        if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"//green
-                        if(estado.textContent === "cancelado") estado.style.color = "#ffff0080"//yellow
-                    </script>
-                </tr>
-            </tbody>
+            <script>
+                // seleccion de color del ESTADO
+                var estado = document.getElementById("estado");
+                if(estado.textContent === "abierto") estado.style.color = "#ff000080"//red
+                if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"//green
+                if(estado.textContent === "anulado") estado.style.color = "#ffff0080"//yellow
+            </script>
         </table>
+
         <div class="botones">
-            <button data-id="{{ticket.id}}" id="btn_res" class="btn-res">RESOLVER</button>
-            <button data-id="{{ticket.id}}" id="btn_cls" class="btn-cls">CANCELAR</button>
+            <button data-id="{{ticket.id}}" id="btn_abr" class="btn-abr">REABRIR</button>
+            <button data-id="{{ticket.id}}" id="btn_res" class="btn-res">CERRAR</button>
+            <button data-id="{{ticket.id}}" id="btn_anul" class="btn-anul">ANULAR</button>
         </div>
 
         <script>
+            // despliega formulario de cambio de estado
             function displayForm(form){
                 var confirmForm = document.querySelector(form);
                 if (confirmForm.style.display === "flex") {
@@ -55,34 +71,50 @@
                 }
             }
 
-            const resolveButton = document.getElementById("btn_res");
-            resolveButton.addEventListener('click', function() {
-                displayForm("#resolve_form");
+            // Boton ABIERTO
+            const abrirButton = document.getElementById("btn_abr");
+            abrirButton.addEventListener('click', function() {
+                displayForm("#abrir_form");
             })
-
-            const cancelButton = document.getElementById("btn_cls");
-            cancelButton.addEventListener('click', function() {
-                displayForm("#cancel_form");
+            // Boton RESUELTO
+            const resolverButton = document.getElementById("btn_res");
+            resolverButton.addEventListener('click', function() {
+                displayForm("#resolver_form");
+            })
+            // Boton ANULADO
+            const anularButton = document.getElementById("btn_anul");
+            anularButton.addEventListener('click', function() {
+                displayForm("#anular_form");
             })
         </script>
 
-        <form action="/admin/estado" method="post" id="resolve_form">
-            Resolver Ticket?
+        <form action="/admin/estado" method="post" id="abrir_form">
+            Reabrir Ticket?
+            <textarea name="observaciones" id="obs" placeholder="Observaciones"></textarea>
+            <input type="text" name="id" style="display: none;" value="{{ticket.id}}">
+            <input type="text" name="estado" style="display: none;" value="abierto">
+
+            <button type="button" onclick="displayForm('#abrir_form')">CANCELAR</button>
+            <button type="submit">ENVIAR</button>
+        </form>
+
+        <form action="/admin/estado" method="post" id="resolver_form">
+            Cerrar Ticket?
             <textarea name="observaciones" id="obs" placeholder="Observaciones"></textarea>
             <input type="text" name="id" style="display: none;" value="{{ticket.id}}">
             <input type="text" name="estado" style="display: none;" value="cerrado">
 
-            <button type="button" onclick="displayForm('#resolve_form')">CANCELAR</button>
+            <button type="button" onclick="displayForm('#resolver_form')">CANCELAR</button>
             <button type="submit">ENVIAR</button>
         </form>
 
-        <form action="/admin/estado" method="post" id="cancel_form">
-            Cerrar Ticket?
+        <form action="/admin/estado" method="post" id="anular_form">
+            Anular Ticket?
             <textarea name="observaciones" id="obs" placeholder="Observaciones"></textarea>
             <input type="text" name="id" style="display: none;" value="{{ticket.id}}">
-            <input type="text" name="estado" style="display: none;" value="cancelado">
+            <input type="text" name="estado" style="display: none;" value="anulado">
 
-            <button type="button" onclick="displayForm('#cancel_form')">CANCELAR</button>
+            <button type="button" onclick="displayForm('#anular_form')">CANCELAR</button>
             <button type="submit">ENVIAR</button>
         </form>
 

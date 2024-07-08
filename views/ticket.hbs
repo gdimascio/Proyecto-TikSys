@@ -9,9 +9,62 @@
 </head>
 
 <body>
-    <h1>Welcome to SysTick</h1>
+    <h1>Welcome to TikSys</h1>
     <div class="admin-div">
         <table class="admin-table">
+                    <table class="admin-table">
+            <tr>
+                <th>Ticket N°</th>
+                <td>{{ticket.ticket}}</td>
+            </tr>
+            <tr>
+                <th>Asunto</th>
+                <td>{{ticket.asunto}}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ticket.nombre}}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>{{ticket.telefono}}</td>
+            </tr>
+            <tr>
+                <th>Mail</th>
+                <td>{{ticket.email}}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ticket.descripcion}}</td>
+            </tr>
+            <tr id="obs">
+                <th>Observaciones</th>
+                <td id="tkt_obs">{{ticket.observaciones}}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td id="estado" style="text-transform:uppercase;">{{ticket.estado}}</td>
+            </tr>
+            <script>
+                // deja de mostrar Observaciones si esta vacia
+                var obs = document.getElementById("obs");
+                var tktObs = document.getElementById("tkt_obs");
+                if(tktObs.textContent === "") {
+                    console.log("asdf")
+                    obs.style.display = "none"
+                }
+
+                // seleccion de color del ESTADO
+                var estado = document.getElementById("estado");
+                if(estado.textContent === "abierto") estado.style.color = "#ff000080"//red
+                if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"//green
+                if(estado.textContent === "anulado") estado.style.color = "#ffff0080"//yellow
+            </script>
+        </table>
+
+
+
+            {{!-- 
             <thead class="table-head">
                 <th>Ticket N°</th>
                 <th>Asunto</th>
@@ -38,12 +91,9 @@
                         if(estado.textContent === "cancelado") estado.style.color = "#ffff0080"//yellow
                     </script>
                 </tr>
-            </tbody>
+            </tbody> 
+            --}}
         </table>
-        {{!-- <div class="botones">
-            <button class="bttn-res">TICKET RESUELTO</button>
-            <button class="bttn-cls">TICKET CERRADO</button>
-        </div> --}}
     </div>
     <div class="back">
         <a href="/"><i class="fa-solid fa-left-long"></i><strong>VOLVER</strong></a>

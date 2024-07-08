@@ -2,6 +2,7 @@
 const async = require("hbs/lib/async");
 const db = require ("../firebase/firebase");
 const { merge } = require("../router/routerAdmin");
+const { FieldValue, Timestamp } = require("firebase-admin/firestore");
 
 const ticketsCollection = db.collection("tickets");
 
@@ -41,7 +42,11 @@ exports.resolveTkt = async(req,res) => {
 
     // actualiza el Estado y Observaciones en el ticket
     if(ticketSnapshot.exists){
-        await ticketRef.set({estado: tktEstado, observaciones: tktObs}, {merge: true})
+        await ticketRef.update({
+            estado: tktEstado, 
+            observaciones: FieldValue.arrayUnion(`${tktEstado}: ${tktObs}`)
+        })
+
     } else {
         console.log("El ticket no existe");
     }
