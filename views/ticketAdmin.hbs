@@ -5,6 +5,7 @@
 <head>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/js/script.js">
     <link rel="icon" href="/img/favicon.png">
 </head>
 
@@ -38,19 +39,22 @@
             </tr>
             <tr>
                 <th>Observaciones</th>
-                <td>{{ticket.observaciones}}</td>
+                <td>
+                    {{#each ticket.observaciones}}
+                    {{this}} <br>
+                    {{/each}}
+                </td>
             </tr>
             <tr>
                 <th>Estado</th>
                 <td id="estado" style="text-transform:uppercase;">{{ticket.estado}}</td>
             </tr>
-
             <script>
                 // seleccion de color del ESTADO
                 var estado = document.getElementById("estado");
-                if(estado.textContent === "abierto") estado.style.color = "#ff000080"//red
-                if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"//green
-                if(estado.textContent === "anulado") estado.style.color = "#ffff0080"//yellow
+                if(estado.textContent === "abierto") estado.style.color = "#ff000080"   //red
+                if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"   //green
+                if(estado.textContent === "anulado") estado.style.color = "#ffff0080"   //yellow
             </script>
         </table>
 

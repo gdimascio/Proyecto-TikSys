@@ -3,10 +3,9 @@ const { onSnapshotsInSync } = require("firebase/firestore");
 const db = require("../firebase/firebase");
 const nodemailer = require("nodemailer");
 
-
-exports.sendMail = async (req,res) => {
-    // RECUPERA EL NUMERO DE TKT DEL QUERY
-    const tktDoc = req.query.tktDoc;
+exports.sendChanges = async (req,res) => {
+    // recupera el ID del tkt del URL
+    const tktDoc = req.params.tktDoc;
     // LLAMA AL TKT CORRESPONDIENTE 
     const ticketsCollection = db.collection("tickets").doc(tktDoc);
     const doc = await ticketsCollection.get();
@@ -19,15 +18,15 @@ exports.sendMail = async (req,res) => {
         port: 587,
         
         auth: {
-            user: process.env.USERNAME,
-            pass: process.env.PASSWORD
+            // user: process.env.USERNAME,
+            // pass: process.env.PASSWORD
 
-            // user: process.env.USERNAME_LOCAL,
-            // pass: process.env.PASSWORD_LOCAL
+            user: process.env.USERNAME_LOCAL,
+            pass: process.env.PASSWORD_LOCAL
         },
         tls: {rejectUnauthorized: false}
     });
-
+    
     await new Promise((resolve, reject) => {
         // verify connection configuration
         transporter.verify(function (error, success) {
@@ -41,14 +40,14 @@ exports.sendMail = async (req,res) => {
         });
     });
 
-    // Configurar correo electronico
-    const mailOptions = {
-        from: 'no-reply@systick.com',  // gmail no acepta otro SENDER...
-        to: email,
-        bcc: 'guido.dimascio@gmail.com',
-        subject: 'Nuevo Ticket Cargado N°' + ticket,
-
-        html: `
+        // Configurar correo electronico
+        const mailOptions = {
+            from: 'no-reply@systick.com',  // gmail no acepta otro SENDER...
+            to: email,
+            bcc: 'guido.dimascio@gmail.com',
+            subject: 'Modificación de Ticket N°' + ticket,
+    
+            html: `           
             <table class="admin-table">
                 <tr>
                     <th>Asunto</th>
@@ -72,7 +71,9 @@ exports.sendMail = async (req,res) => {
                 </tr>
                 <tr>
                     <th>Observaciones</th>
+                <td>
                     ${observaciones.map(obs => `${obs}<br>`).join('')}
+                </td>
                 </tr>
                 <tr>
                     <th>Estado</th>
@@ -80,30 +81,21 @@ exports.sendMail = async (req,res) => {
                 </tr>
             </table>
             <a href="https://systick.vercel.app/tkt/${tktDoc}">Ir al ticket</a><br/>
-        `,
+            `,    
+        };
 
-        // TODO: agregar estilos al envio de mail
-    };
-
-    await new Promise((resolve, reject) => {
-        // Enviar correo
-        transporter.sendMail(mailOptions, (err, info) => {
-            if (err) {
-                console.error(err);
-                reject(err);
-            } else {
-                // Envia una respuesta por medio de ALERT, luego redirecciona
-                res.send(`
-                    <script>
-                        alert("Email Sent Successfully.")
-                        window.location.href = "/";
-                    </script>
-                    `);
-                res.redirect("/");
-                // console.log(info);
-                resolve(info);
-            }
+        await new Promise((resolve, reject) => {
+            // Enviar correo
+            transporter.sendMail(mailOptions, (err, info) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    // redirecciona a lista de tickets
+                    res.redirect("/admin")
+                    // console.log(info);
+                    resolve(info);
+                }
+            });
         });
-    });
-
 }

@@ -39,7 +39,11 @@
             </tr>
             <tr id="obs">
                 <th>Observaciones</th>
-                <td id="tkt_obs">{{ticket.observaciones}}</td>
+                <td id="tkt_obs">
+                    {{#each ticket.observaciones}}
+                    {{this}} <br>
+                    {{/each}}
+                </td>
             </tr>
             <tr>
                 <th>Estado</th>
@@ -50,7 +54,6 @@
                 var obs = document.getElementById("obs");
                 var tktObs = document.getElementById("tkt_obs");
                 if(tktObs.textContent === "") {
-                    console.log("asdf")
                     obs.style.display = "none"
                 }
 

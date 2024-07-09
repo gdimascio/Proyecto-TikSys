@@ -1,3 +1,2 @@
 
 * inicio de sesion (admin/admin) para acceso a DB
-* observaciones: timestamp de la observacion y mayusculas de estado (?)
