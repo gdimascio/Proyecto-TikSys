@@ -11,19 +11,32 @@ exports.sendMail = async (req,res) => {
     const ticketsCollection = db.collection("tickets").doc(tktDoc);
     const doc = await ticketsCollection.get();
     // ASIGNA LOS DATOS DEL TICKET
-    const {asunto, nombre, telefono, email, descripcion, estado, ticket, observaciones} = doc.data();
+    const {asunto, nombre, telefono, email, descripcion, estado, ticket} = doc.data();
 
-    // Configura transportador SMTP
+    // Revisa si se esta accediendo por host o de forma local
+    let username;
+    let password;
+    try {
+        if (!process.env.USERNAME || !process.env.PASSWORD) {
+            throw new Error("No se encontraron variables en .env");
+        }
+        username = process.env.USERNAME;
+        password = process.env.PASSWORD
+    } catch (error) {
+        console.log("No se encontraron variables en.env");
+        console.log("Usando variables locales");
+        username = process.env.USERNAME_LOCAL;
+        password = process.env.PASSWORD_LOCAL
+    }
+
+    // Configura transportador SMTP usando .env
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 587,
         
         auth: {
-            user: process.env.USERNAME,
-            pass: process.env.PASSWORD
-
-            // user: process.env.USERNAME_LOCAL,
-            // pass: process.env.PASSWORD_LOCAL
+            user: username,
+            pass: password
         },
         tls: {rejectUnauthorized: false}
     });
@@ -49,40 +62,34 @@ exports.sendMail = async (req,res) => {
         subject: 'Nuevo Ticket Cargado N°' + ticket,
 
         html: `
-            <table class="admin-table">
-                <tr>
-                    <th>Asunto</th>
-                    <td>${asunto}</td>
-                </tr>
-                <tr>
-                    <th>Nombre</th>
-                    <td>${nombre}</td>
-                </tr>
-                <tr>
-                    <th>Telefono</th>
-                    <td>${telefono}</td>
-                </tr>
-                <tr>
-                    <th>Mail</th>
-                    <td>${email}</td>
-                </tr>
-                <tr>
-                    <th>Descripcion</th>
-                    <td>${descripcion}</td>
-                </tr>
-                <tr>
-                    <th>Observaciones</th>
-                    ${observaciones.map(obs => `${obs}<br>`).join('')}
-                </tr>
-                <tr>
-                    <th>Estado</th>
-                    <td id="estado" style="text-transform:uppercase;">${estado}</td>
-                </tr>
-            </table>
-            <a href="https://systick.vercel.app/tkt/${tktDoc}">Ir al ticket</a><br/>
-        `,
-
-        // TODO: agregar estilos al envio de mail
+        <table class="admin-table">
+            <tr>
+                <th>Asunto</th>
+                <td>${asunto}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>${nombre}</td>
+            </tr>
+            <tr>
+                <th>Telefono</th>
+                <td>${telefono}</td>
+            </tr>
+            <tr>
+                <th>Mail</th>
+                <td>${email}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>${descripcion}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td id="estado" style="text-transform:uppercase;">${estado}</td>
+            </tr>
+        </table>
+        <a href="https://systick.vercel.app/tkt/${tktDoc}">Ir al ticket</a><br/>
+        `
     };
 
     await new Promise((resolve, reject) => {
