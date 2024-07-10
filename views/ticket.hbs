@@ -12,7 +12,6 @@
     <h1>Welcome to TikSys</h1>
     <div class="admin-div">
         <table class="admin-table">
-                    <table class="admin-table">
             <tr>
                 <th>Ticket N°</th>
                 <td>{{ticket.ticket}}</td>
@@ -63,39 +62,6 @@
                 if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"//green
                 if(estado.textContent === "anulado") estado.style.color = "#ffff0080"//yellow
             </script>
-        </table>
-
-
-
-            {{!-- 
-            <thead class="table-head">
-                <th>Ticket N°</th>
-                <th>Asunto</th>
-                <th>Nombre</th>
-                <th>Telefono</th>
-                <th>Mail</th>
-                <th>Descripcion</th>
-                <th>Estado</th>
-            </thead>
-
-            <tbody class="table-body">
-                <tr>
-                    <td>{{ticket.ticket}}</td>
-                    <td>{{ticket.asunto}}</td>
-                    <td>{{ticket.nombre}}</td>
-                    <td>{{ticket.telefono}}</td>
-                    <td>{{ticket.email}}</td>
-                    <td>{{ticket.descripcion}}</td>
-                    <td id="estado" style="text-transform:uppercase;">{{ticket.estado}}</td>
-                    <script>
-                        var estado = document.getElementById("estado");
-                        if(estado.textContent === "abierto") estado.style.color = "#ff000080"//red
-                        if(estado.textContent === "cerrado") estado.style.color = "#002e00b3"//green
-                        if(estado.textContent === "cancelado") estado.style.color = "#ffff0080"//yellow
-                    </script>
-                </tr>
-            </tbody> 
-            --}}
         </table>
     </div>
     <div class="back">

@@ -2,6 +2,10 @@ require("dotenv").config;
 const { onSnapshotsInSync } = require("firebase/firestore");
 const db = require("../firebase/firebase");
 const nodemailer = require("nodemailer");
+const fs = require('fs');
+const { promisify } = require('util');
+const handlebars = require('handlebars');
+const juice = require('juice');
 
 exports.sendChanges = async (req,res) => {
     // recupera el ID del tkt del URL
@@ -53,48 +57,42 @@ exports.sendChanges = async (req,res) => {
         });
     });
 
-    // Configurar correo electronico
+    // Lee el template HTML y complílala con Handlebars
+    const readFileAsync = promisify(fs.readFile);
+    let htmlTemplate;
+    let cssSheet;
+    try {
+        const templateFile = await readFileAsync('views/tktMailTemplate.hbs', 'utf-8');
+        const cssFile = await readFileAsync('public/css/style.css', 'utf-8');
+        htmlTemplate = handlebars.compile(templateFile);
+        cssSheet = cssFile;
+    } catch (error) {
+        console.error("Error leyendo la plantilla:", error);
+        return res.status(500).send("Error al leer la plantilla de correo.");
+    }
+
+    // Datos del ticket para enviar al template
+    const datosTicket = {
+        asunto: asunto,
+        nombre: nombre,
+        telefono: telefono,
+        email: email,
+        descripcion: descripcion,
+        observaciones: observaciones,
+        estado: estado,
+        tktDoc: tktDoc
+    }
+    let htmlToSend = htmlTemplate(datosTicket)
+    htmlToSend = juice.inlineContent(htmlToSend, cssSheet);
+    
+    // Configurar correo electronico utilizando el template htmlToSend
     const mailOptions = {
         from: 'no-reply@systick.com',  // gmail no acepta otro SENDER...
         to: email,
         bcc: 'guido.dimascio@gmail.com',
         subject: 'Modificación de Ticket N°' + ticket,
 
-        html: `           
-        <table class="admin-table">
-            <tr>
-                <th>Asunto</th>
-                <td>${asunto}</td>
-            </tr>
-            <tr>
-                <th>Nombre</th>
-                <td>${nombre}</td>
-            </tr>
-            <tr>
-                <th>Telefono</th>
-                <td>${telefono}</td>
-            </tr>
-            <tr>
-                <th>Mail</th>
-                <td>${email}</td>
-            </tr>
-            <tr>
-                <th>Descripcion</th>
-                <td>${descripcion}</td>
-            </tr>
-            <tr>
-                <th>Observaciones</th>
-            <td>
-                ${observaciones.map(obs => `${obs}<br>`).join('')}
-            </td>
-            </tr>
-            <tr>
-                <th>Estado</th>
-                <td id="estado" style="text-transform:uppercase;">${estado}</td>
-            </tr>
-        </table>
-        <a href="https://systick.vercel.app/tkt/${tktDoc}">Ir al ticket</a><br/>
-        `  
+        html: htmlToSend
     };
 
     await new Promise((resolve, reject) => {

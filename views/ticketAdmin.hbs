@@ -65,6 +65,17 @@
         </div>
 
         <script>
+            // seleccion de color del ESTADO
+            var estado = document.getElementById("estado");
+            var estadoAbr = document.getElementById("btn_abr");
+            var estadoRes = document.getElementById("btn_res");
+            var estadoAnul = document.getElementById("btn_anul");
+            if(estado.textContent === "abierto") estadoAbr.style.display = "none"   
+            if(estado.textContent === "cerrado") estadoRes.style.display = "none"   
+            if(estado.textContent === "anulado") estadoAnul.style.display = "none"  
+        </script>
+
+        <script>
             // despliega formulario de cambio de estado
             function displayForm(form){
                 var confirmForm = document.querySelector(form);

@@ -1,2 +1,8 @@
 
 * inicio de sesion (admin/admin) para acceso a DB
+* agregar estilos a envio de mail (ya esta hecha la logica y puede leer el template nose.hbs pero no esta reconociendo el css (y honestamente ya me esta chupando un huevo...))
+
+
+COMMIT:
+se agrega logica para ocultar botones de estado irrelevantes
+se implementa logica para uso de template tktMailTemplate.hbs y .css a envio de adminMail 
