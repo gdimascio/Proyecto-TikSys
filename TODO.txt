@@ -1,4 +1,5 @@
 
 * inicio de sesion (admin/admin) para acceso a DB
+* escribir descripcion bajo el titulo
 
-
+COMMIT:

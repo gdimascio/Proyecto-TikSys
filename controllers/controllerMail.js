@@ -107,7 +107,6 @@ exports.sendMail = async (req,res) => {
                     </script>
                     `);
                 res.redirect("/");
-                // console.log(info);
                 resolve(info);
             }
         });
