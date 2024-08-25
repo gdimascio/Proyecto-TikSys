@@ -1,3 +1,3 @@
 Ticket platform
 
-<a href="https://systick.vercel.app/">LIVE DEMO</a> 
+<a href="https://tiksys.vercel.app/">LIVE DEMO</a> 
